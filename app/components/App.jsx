@@ -1,6 +1,9 @@
 import React from 'react';
 import Notes from './Notes';
 import uuid from 'uuid';
+
+import connect from '../libs/connect';
+
 // development setup will install the uuid dependency automatically.
 let noteCount = 0;
 class App extends React.Component {
@@ -27,6 +30,7 @@ class App extends React.Component {
 
     return(
       <div>
+        {this.props.test}
         <button className="add-note" onClick={this.addNote}> + </button>
         <Notes 
           notes=      {notes} 
@@ -82,4 +86,6 @@ class App extends React.Component {
 
 } // End class App
 
-export default App;
+export default connect(() => ({
+  test: 'test'
+}))(App)

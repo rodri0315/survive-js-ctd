@@ -1,36 +1,19 @@
 import React from 'react';
 import Notes from './Notes';
 import uuid from 'uuid';
-
 import connect from '../libs/connect';
+import NoteActions from '../actions/NoteActions';
 
 // development setup will install the uuid dependency automatically.
 let noteCount = 0;
 class App extends React.Component {
-  constructor(props){
-    super(props);
-
-    this.state = {
-      notes: [
-        {
-          id: uuid.v4(),
-          task: 'Learn React'
-        },
-        {
-          id: uuid.v4(),
-          task: 'Do laundry'
-        }
-      ]
-    };
-  } // end constructor
-  
 
   render() {
-    const {notes} = this.state;
+    const {notes} = this.props;
 
     return(
       <div>
-        {this.props.test}
+
         <button className="add-note" onClick={this.addNote}> + </button>
         <Notes 
           notes=      {notes} 
@@ -43,49 +26,34 @@ class App extends React.Component {
 
   
   addNote = () => {
-    this.setState({
-      notes: [...this.state.notes, {
-        id: uuid.v4(),
-        task: `New Task #${noteCount}`
-      }]
+    this.props.NoteActions.create({
+      id: uuid.v4(),
+      task: 'New task'
     });
-    noteCount++;
   } // End addNote 
 
   deleteNote = (id, evt) => {
     // Avoid bubbling to edit
     evt.stopPropagation();
 
-    this.setState({
-      notes: this.state.notes.filter(note => note.id !== id)
-    })
+    this.props.NoteActions.delete(id);
   }
 
   activateNoteEdit = (id) => {
-    this.setState({
-      notes: this.state.notes.map((note) => {
-        if(note.id === id) {
-          note.editing = true;
-        }
-        return note;
-      })
-    }) // end setState
+    this.props.NoteActions.update({
+      id,
+      editing: true
+    })
   } //End activateNoteEdit
 
   editNote = (id, task) => {
-    this.setState({
-      notes: this.state.notes.map((note) => {
-        if(note.id === id) {
-          note.editing = false;
-          note.task = task
-        }
-        return note;
-      })
-    }) //end setState
+    this.props.NoteActions.update({id, task, editing: false})
   } //End edit Note
 
 } // End class App
 
-export default connect(() => ({
-  test: 'test'
-}))(App)
+export default connect(({notes}) => ({
+  notes
+}),
+  {NoteActions}
+)(App)

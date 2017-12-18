@@ -1,20 +1,10 @@
-import uuid from 'uuid'
 import NoteActions from '../actions/NoteActions'
 
 export default class NoteStores {
   constructor() {
     this.bindActions(NoteActions);
-
-    this.notes = [
-      {
-        id: uuid.v4(),
-        task: 'Learn React - Flux'
-      },
-      {
-        id: uuid.v4(),
-        task: 'Go to boxing class'
-      }
-    ];
+    // persistency works now, we might as well start from a blank slate. 
+    this.notes = [];
   }
 
   create(note) {

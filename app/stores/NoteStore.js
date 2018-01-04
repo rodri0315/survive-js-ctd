@@ -23,7 +23,7 @@ export default class NoteStores {
         return note;
       })
     }) // end setState
-  }
+  } // end update
   delete(id) {
     console.log('delete note', id);
     this.setState({

@@ -42,4 +42,21 @@ export default class LaneStore {
       })
     })
   } // End detachFromLane
+  update(updatedLane) {
+    console.log('update lane', updatedLane);
+    this.setState({
+      lanes: this.lanes.map((lane) => {
+        if(lane.id === updatedLane.id) {
+          return Object.assign({}, lane, updatedLane)
+        }
+        return lane;
+      })
+    }) // end setState
+  } // end update
+  delete(id) {
+    this.setState({
+      lanes: this.lanes.filter(lane => lane.id !== id)
+    })
+  } // delete
+
 }
